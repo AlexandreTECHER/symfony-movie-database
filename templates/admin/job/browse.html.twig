@@ -1,0 +1,78 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello jobController!
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="row">
+			<h1>Liste des jobs</h1>
+		</div>
+		<div class="row">
+
+			<a href="{{ path('admin_job_add') }}">Ajouter un job
+				<i class="fa fa-plus-square"></i>
+			</a>
+		</div>
+		<div class="row">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Département</th>
+						<th scope="col">Date de création</th>
+						<th scope="col">Date de mise à jour</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{% for job in jobs %}
+
+						<tr class="{{ cycle(['', 'table-dark'], loop.index0) }}">
+							<th scope="row">{{ job.id }}</th>
+							<td>
+								<a href="{{ path('admin_job_read', {'id' : job.id} ) }}">{{ job.name }}</a>
+							</td>
+							{# <td>
+								<a href="{{ path('admin_department_read', {'id' : job.department.id|default(0)} ) }}">{{ job.department.name|default('') }}</a>
+							</td> #}
+							<td>
+								{% if job.department is not null %}
+									<a href="{{ path('admin_department_read', {'id' : job.department.id} ) }}">{{ job.department.name }}</a>
+								{% endif %}
+							</td>
+							<td>{{ job.createdAt|date('Y-m-d H:i:s') }}</td>
+							<td>{{ job.updatedAt is not null ? job.updatedAt|date('Y-m-d H:i:s')  }}</td>
+							<td>
+								<a href="{{ path('admin_job_edit', {'id': job.id }) }}">
+									<i class="btn btn-link fa fa-edit fa-2x"></i>
+								</a>
+								<form action="{{ path('admin_job_delete', {'id': job.id }) }}" method="post" class="d-inline">
+									<input type="hidden" name="_method" value="DELETE"/>
+									<button class="btn btn-link fa fa-trash fa-2x"></button>
+								</form>
+							</td>
+						</tr>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+document.querySelectorAll('form').forEach(function (element) {
+element.addEventListener('submit', function (evt) {
+if (confirm('Êtes-vous sûre ?') == false) {
+evt.preventDefault();
+}
+});
+});
+});
+	</script>
+
+{% endblock %}

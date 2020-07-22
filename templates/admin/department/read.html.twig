@@ -1,0 +1,25 @@
+{% extends "admin/base.html.twig" %}
+
+
+{% block body %}
+	<div class="container">
+		<div class="row">
+
+
+			<div class="card mb-3">
+				<h3 class="card-header">{{ department.name }}</h3>
+				<div class="card-body">
+					<p>Date de création : {{ department.createdAt|date('Y-m-d H:i:s') }}</p>
+                    <p>Date de mise à jour : {{ department.updatedAt is not null ? department.updatedAt|date('Y-m-d H:i:s')  }}</p>
+				</div>
+				
+				
+				<div class="card-footer text-muted">
+					<a href="{{ path('admin_department_browse') }}">Retour à la liste</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}

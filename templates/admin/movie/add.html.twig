@@ -1,0 +1,18 @@
+{% extends "admin/base.html.twig" %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="row">
+			<h1>Ajouter un film</h1>
+		</div>
+		<div class="row">
+			{{ form_start(form) }}
+            {{ form_row(form.title) }}
+			{{ form_row(form.genres) }}
+			<button>Ajouter</button>
+			{{ form_end(form) }}
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MainController!
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+    <div class="row">
+        <h2>Liste des films</h2>
+    </div>
+		<div class="row">
+
+			{% for movie in movies %}
+				<div class="card col-3">
+					<div class="card-body">
+					<a href="{{ path('movie_single', {'id' : movie.id }) }}">{{ movie.title }}</a>	
+					</div>
+				</div>
+			{% endfor %}
+
+		</div>
+	</div>
+{% endblock %}

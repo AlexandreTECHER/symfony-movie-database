@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ movie.title }}{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="row">
+            <h1>{{ movie.title }}</h1>
+        </div>
+        <div class="row">
+        
+        <div class="col-6">
+        
+        {% for casting in movie.castings %}
+            <li>{{ casting.role }} <em>(joué par : {{ casting.person.name }})</em></li>
+        {% endfor %}
+        </div>
+        <div class="col-6">
+        
+            {% for genre in movie.genres %}
+                <li>{{ genre.name }}</li>
+            {% endfor %}
+        
+        </div>
+        </div>
+    </div>
+
+{% endblock %}

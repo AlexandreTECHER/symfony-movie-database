@@ -1,0 +1,39 @@
+App\Entity\Genre:
+    genre_{1..23}:
+        name (unique): '<movieGenre()>' 
+
+App\Entity\Movie:
+    movie_{1..50}:
+        title (unique): '<movieTitle()>' 
+        genres: '2x @genre_*'
+
+App\Entity\Person:
+    person_{1..30}:
+        name: '<name()>' 
+
+App\Entity\Actor:
+    actor_{1..200}:
+        role: '<firstName()>'
+        creditOrder: '<numberBetween(1, 10)>'
+        person: '@person_*'
+        movie: '@movie_*'
+
+App\Entity\Director:
+    director_{1..30}:
+        person: '@person_*'
+        movie: '@movie_*'
+
+App\Entity\Department:
+    department_{1..30}:
+        name: '<word()>'
+
+App\Entity\Job:
+    job_{1..30}:
+        name: '<jobTitle()>'
+        department: '@department_*'
+
+App\Entity\CrewMember:
+    crew_member_{1..30}:
+        person: '@person_*'
+        movie: '@movie_*'
+        job: '@job_*'

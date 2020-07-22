@@ -1,0 +1,70 @@
+{% extends 'admin/base.html.twig' %}
+
+{% block title %}Hello movieController!
+{% endblock %}
+
+{% block body %}
+
+	<div class="container">
+		<div class="row">
+			<h1>Liste des films</h1>
+		</div>
+		<div class="row">
+
+			<a href="{{ path('admin_movie_add') }}">Ajouter un film
+				<i class="fa fa-plus-square"></i>
+			</a>
+		</div>
+		<div class="row">
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Titre</th>
+						<th scope="col">Département</th>
+						<th scope="col">Date de création</th>
+						<th scope="col">Date de mise à jour</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{% for movie in movies %}
+
+						<tr class="{{ cycle(['', 'table-dark'], loop.index0) }}">
+							<th scope="row">{{ movie.id }}</th>
+							<td>
+								<a href="{{ path('admin_movie_read', {'id' : movie.id} ) }}">{{ movie.title }}</a>
+							</td>
+							<td>{{ movie.createdAt|date('Y-m-d H:i:s') }}</td>
+							<td>{{ movie.updatedAt is not null ? movie.updatedAt|date('Y-m-d H:i:s')  }}</td>
+							<td>
+								<a href="{{ path('admin_movie_edit', {'id': movie.id }) }}">
+									<i class="btn btn-link fa fa-edit fa-2x"></i>
+								</a>
+								<form action="{{ path('admin_movie_delete', {'id': movie.id }) }}" method="post" class="d-inline">
+									<input type="hidden" name="_method" value="DELETE"/>
+									<button class="btn btn-link fa fa-trash fa-2x"></button>
+								</form>
+							</td>
+						</tr>
+
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+document.querySelectorAll('form').forEach(function (element) {
+element.addEventListener('submit', function (evt) {
+if (confirm('Êtes-vous sûre ?') == false) {
+evt.preventDefault();
+}
+});
+});
+});
+	</script>
+
+{% endblock %}
