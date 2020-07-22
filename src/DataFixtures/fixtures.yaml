@@ -37,3 +37,8 @@ App\Entity\CrewMember:
         person: '@person_*'
         movie: '@movie_*'
         job: '@job_*'
+
+App\Entity\User:
+    user_{alex, michel, lucie, ben, romain}:
+        email: '<current()>\@o.o'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$wq1urxSq1JkvAlbZlP6kTQ\$ez7fhejpP4a94E9w74/83WmiWD8oeAA+jGt5nfk52sw'
