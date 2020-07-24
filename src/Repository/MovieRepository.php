@@ -26,10 +26,11 @@ class MovieRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('m');
         $qb->leftJoin('m.genres', 'g');
-        $qb->leftJoin('m.castings', 'c');
-        $qb->leftJoin('c.person', 'p');
-        $qb->addSelect('g, c, p'); 
+        $qb->leftJoin('m.employees', 'e');
+        $qb->leftJoin('e.person', 'p');
+        $qb->addSelect('g, e, p'); 
         $qb->where('m.id = :value');
+        $qb->andWhere('e INSTANCE OF App\Entity\Actor');
         $qb->setParameter('value', $id);
 
         return $qb->getQuery()->getSingleResult(); 

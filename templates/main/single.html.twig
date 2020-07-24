@@ -12,8 +12,8 @@
         
         <div class="col-6">
         
-        {% for casting in movie.castings %}
-            <li>{{ casting.role }} <em>(joué par : {{ casting.person.name }})</em></li>
+        {% for actor in movie.actors %}
+            <li>{{ actor.role }} <em>(joué par : {{ actor.person.name }})</em></li>
         {% endfor %}
         </div>
         <div class="col-6">
