@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\PersonRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=PersonRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\PersonRepository")
  */
 class Person
 {
@@ -16,11 +16,13 @@ class Person
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("movie")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("movie")
      */
     private $name;
 
@@ -35,14 +37,14 @@ class Person
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employment::class, mappedBy="person", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Employment", mappedBy="person", orphanRemoval=true)
      */
     private $employments;
 
     public function __construct()
     {
-        $this->createdAt = new \DateTime();
         $this->castings = new ArrayCollection();
+        $this->createdAt = new \DateTime();
         $this->employments = new ArrayCollection();
     }
 
@@ -95,7 +97,7 @@ class Person
         return $this->employments;
     }
 
-    public function addEmployments(Employment $employment): self
+    public function addEmployment(Employment $employment): self
     {
         if (!$this->employments->contains($employment)) {
             $this->employments[] = $employment;
@@ -105,7 +107,7 @@ class Person
         return $this;
     }
 
-    public function removeEmployee(Employment $employment): self
+    public function removeEmployment(Employment $employment): self
     {
         if ($this->employments->contains($employment)) {
             $this->employments->removeElement($employment);

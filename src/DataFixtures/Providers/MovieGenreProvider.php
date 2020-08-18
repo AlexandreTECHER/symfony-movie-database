@@ -6,7 +6,6 @@ use Faker\Provider\Base;
 
 class MovieGenreProvider extends Base
 {
-
     protected static $movies = [
         'Detachment',
         'Horrible Bosses 2',

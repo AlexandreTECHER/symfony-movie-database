@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\JobRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=JobRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\JobRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Job
 {
@@ -35,13 +35,13 @@ class Job
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Department::class, inversedBy="jobs")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Department", inversedBy="jobs")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $department;
 
     /**
-     * @ORM\OneToMany(targetEntity=CrewMember::class, mappedBy="job")
+     * @ORM\OneToMany(targetEntity="App\Entity\CrewMember", mappedBy="job")
      */
     private $crewMembers;
 
@@ -133,5 +133,14 @@ class Job
         }
 
         return $this;
+    }
+
+    /**
+     * @ORM\PreUpdate
+     * @ORM\PrePersist
+     */
+    public function setUpdatedAtLC()
+    {
+        $this->updatedAt = new \DateTime();
     }
 }

@@ -2,19 +2,23 @@
 
 namespace App\Entity;
 
-use App\Repository\CrewMemberRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=CrewMemberRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\CrewMemberRepository")
  */
 class CrewMember extends Employment
 {
     /**
-     * @ORM\ManyToOne(targetEntity=Job::class, inversedBy="crewMembers")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Job", inversedBy="crewMembers")
      * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $job;
+
+    public function __toString()
+    {
+        return $this->person->getName();
+    }
 
     public function getJob(): ?Job
     {

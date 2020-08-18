@@ -36,16 +36,17 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // On encode le mot de passe comme dans edit()
             $password = $form->get('password')->getData();
 
+            // On lance une exception si le mot de passe n'est pas défini
             if ($password === null) {
-
-                throw new \Exception('Un mot de passe est recquis');
+                throw new \Exception('T\'es pas bien ? Ça va pas de créer un utilisateur sans mot de passe ? On verra en saison 4 comment avoir un champ de formulaire dont le required peut changer selon qu\'on est dans add(() ou dans edit()');
             }
-
+            
             $encodedPassword = $passwordEncoder->encodePassword($user, $password);
             $user->setPassword($encodedPassword);
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
@@ -75,16 +76,23 @@ class UserController extends AbstractController
      */
     public function edit(Request $request, User $user, UserPasswordEncoderInterface $passwordEncoder): Response
     {
+        // Cette méthode contrôleur à été créé par la commande make:crud
+        // Elle fait le même travail qu'on a l'habitude faire coder à la main
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // On doit modifier $user pour lui attribuer le mot de passe s'il a été spécifié
+            // On récupére d'abord le contenu du champs password
             $password = $form->get('password')->getData();
 
+            // $password vaut null si aucun mot de passe n'a été spécifié
             if ($password !== null) {
-
+                // On va attribuer le nouveau mot de passe à $user
+                // On doit d'abord encoder le mot de passe qu'on stocke dans $encodedPassword
                 $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+
+                // On attribue maintenant le mot de passe chiffré à notre $user
                 $user->setPassword($encodedPassword);
             }
             $this->getDoctrine()->getManager()->flush();
@@ -103,7 +111,7 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete'.$user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();

@@ -2,16 +2,16 @@
 
 {% block body %}
 
-	<div class="container">
-		<div class="row">
-			<h1>Ajouter le départment</h1>
-		</div>
-		<div class="row">
-			{{ form_start(form) }}
-            {{ form_row(form.name) }}
-			<button>Ajouter</button>
-			{{ form_end(form) }}
-		</div>
-	</div>
+<div class="container">
+    <div class="row">
+    <h1>Ajouter un Département</h1>
+    </div>
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        <button>Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+</div>
 
 {% endblock %}

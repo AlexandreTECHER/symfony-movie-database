@@ -13,6 +13,9 @@ class MovieType extends AbstractType
     {
         $builder
             ->add('title')
+            // Pour le champs des genres, on a un EntityType par défaut,
+            // on ne redéfinit le type donc on envoie null
+            // Ça nous permet de renvoyer des options dans le troisième paramètre
             ->add('genres', null, [
                 'expanded' => true,
             ])

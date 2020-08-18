@@ -7,55 +7,54 @@ use App\Entity\Genre;
 use App\Entity\Movie;
 use App\Entity\Person;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Persistence\ObjectManager;
+use Doctrine\Common\Persistence\ObjectManager;
 
 class Movies extends Fixture
 {
     public function load(ObjectManager $em)
     {
+        // Les Fixtures sont des clases qui créent des entités et les peristent en BDD
+        // Donc, ce qu'on a fait hier dans un contrôleur, on peut le faire aujourd'hui dans une fixture
+        // C'est copié-collé: ici :
+
         $genres = ['horreur', 'comédie', 'thriller', 'drame', 'fantastique', 'science-fiction', 'aventure', 'action'];
-        $genreEntities = [];
+        $genresEntities = [];
 
-        foreach($genres as $genreName){
-
+        foreach($genres as $genreName) {
             $genre = new Genre();
             $genre->setName($genreName);
             $em->persist($genre);
-            $genreEntities[] = $genre;
-
-
+            $genresEntities[] = $genre;
         }
 
-        $people = ['Michel', 'Jacquelin', 'Ginette', 'Marcel', 'Prosperine', 'Victorinne'];
+        $people = ['Michel', 'Jaquelin', 'Ginette', 'Marcel', 'Proserpine', 'Victorine'];
         $peopleEntities = [];
-        
-        foreach($people as $personName){
 
+        foreach($people as $personName) {
             $person = new Person();
             $person->setName($personName);
             $em->persist($person);
-
             $peopleEntities[] = $person;
-
         }
 
-        
         $moviesEntities = [];
 
-        foreach($this->getMovies() as $movieTitle){
-
+        // On a déplacé la liste des films et la liste des rôles dans des méthodes de cette fixture
+        // Ça revient au même, c'est juste qu'on sépare cette liste
+        // Ça rend l'algorithme de création des entités un peu plus facile à lire
+        // et ça devient plus facile d'ajouter des nouvelles données fictives dans les array
+        foreach($this->getMovies() as $movieTitle) {
             $movie = new Movie();
             $movie->setTitle($movieTitle);
-            $movie->addGenre($genreEntities[mt_rand(0, 7)]);
-            $movie->addGenre($genreEntities[mt_rand(0, 7)]);
+            $movie->addGenre($genresEntities[mt_rand(0, 7)]);
+            $movie->addGenre($genresEntities[mt_rand(0, 7)]);
+
             $em->persist($movie);
 
             $moviesEntities[] = $movie;
         }
 
-        
-
-        foreach($this->getRoles() as $role){
+        foreach($this->getRoles() as $role) {
             $casting = new Casting();
             $casting->setRole($role);
             $casting->setCreditOrder(mt_rand(1,32));
@@ -63,30 +62,13 @@ class Movies extends Fixture
             $casting->setPerson($peopleEntities[mt_rand(0,5)]);
 
             $em->persist($casting);
-
         }
 
         $em->flush();
     }
 
-    public function getRoles(){
-
-        return [
-            'Superman', 
-            'Mrs Doubtfire', 
-            'Le génie', 
-            'Ace Ventura', 
-            'Criquette', 
-            'Lester', 
-            'Neo', 
-            'Morpheus', 
-            'Marty', 
-            'Emmett'
-        ];
-    }
-
-    public function getMovies(){
-
+    public function getMovies()
+    {
         return [
             'Detachment',
             'Horrible Bosses 2',
@@ -438,6 +420,24 @@ class Movies extends Fixture
             'Never Been Kissed',
             'Paul',
             'Divergent',
+        ];
+    }
+
+    public function getRoles()
+    {
+        return [
+            'Superman',
+            'Mrs Doubtfire',
+            'Le génie',
+            'Ace Ventura',
+            'Criquette',
+            'Monsieur',
+            'Madame',
+            'Thor',
+            'Milo',
+            'Hubert Bonnisseur de La Bath',
+            'Patrick',
+            'Macfly'
         ];
     }
 }

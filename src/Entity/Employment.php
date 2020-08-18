@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\EmploymentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=EmploymentRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\EmploymentRepository")
  * @ORM\InheritanceType("JOINED")
  */
 class Employment
@@ -19,16 +19,17 @@ class Employment
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Movie::class, inversedBy="employees")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="employees")
      * @ORM\JoinColumn(nullable=false)
      */
     private $movie;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Person::class, inversedBy="employments")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Person", inversedBy="employments")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("movie")
      */
-    private $person;
+    protected $person;
 
     /**
      * @ORM\Column(type="datetime")
@@ -40,10 +41,10 @@ class Employment
      */
     private $updatedAt;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->createdAt = new \DateTime();
     }
-
 
     public function getId(): ?int
     {

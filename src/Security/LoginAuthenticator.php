@@ -24,8 +24,6 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
-
     private $entityManager;
     private $urlGenerator;
     private $csrfTokenManager;
@@ -41,7 +39,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
     public function supports(Request $request)
     {
-        return self::LOGIN_ROUTE === $request->attributes->get('_route')
+        return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
     }
 
@@ -71,7 +69,7 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Cette adresse email est inconnue');
+            throw new CustomUserMessageAuthenticationException('Cette adresse email est inconnue.');
         }
 
         return $user;
@@ -96,12 +94,12 @@ class LoginAuthenticator extends AbstractFormLoginAuthenticator implements Passw
             return new RedirectResponse($targetPath);
         }
 
-        return new RedirectResponse($this->urlGenerator->generate('admin_movie_browse'));
+        return new RedirectResponse($this->urlGenerator->generate('main'));
         // throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 
     protected function getLoginUrl()
     {
-        return $this->urlGenerator->generate(self::LOGIN_ROUTE);
+        return $this->urlGenerator->generate('app_login');
     }
 }

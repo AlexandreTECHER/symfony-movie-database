@@ -4,12 +4,12 @@ App\Entity\Genre:
 
 App\Entity\Movie:
     movie_{1..50}:
-        title (unique): '<movieTitle()>' 
-        genres: '2x @genre_*'
+        title (unique): '<movieTitle()>'    
+        genres: '<numberBetween(1, 4)>x @genre_*'
 
 App\Entity\Person:
     person_{1..30}:
-        name: '<name()>' 
+        name: '<name()>'
 
 App\Entity\Actor:
     actor_{1..200}:
@@ -22,7 +22,7 @@ App\Entity\Director:
     director_{1..30}:
         person: '@person_*'
         movie: '@movie_*'
-
+        
 App\Entity\Department:
     department_{1..30}:
         name: '<word()>'
@@ -39,6 +39,6 @@ App\Entity\CrewMember:
         job: '@job_*'
 
 App\Entity\User:
-    user_{alex, michel, lucie, ben, romain}:
+    user_{jc, claire, lucie, gaetan, ben, romain}:
         email: '<current()>\@o.o'
-        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$wq1urxSq1JkvAlbZlP6kTQ\$ez7fhejpP4a94E9w74/83WmiWD8oeAA+jGt5nfk52sw'
+        password: '\$argon2id\$v=19\$m=65536,t=4,p=1\$OdADE6AnFM7WqRZfknwk8Q\$Qev06LgggO+cUvKKSWGn/3uN2EkINULpx2l1h383+cs'

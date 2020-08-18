@@ -2,24 +2,30 @@
 
 namespace App\Entity;
 
-use App\Repository\ActorRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=ActorRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\ActorRepository")
  */
 class Actor extends Employment
 {
-
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("movie")
      */
     private $role;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("movie")
      */
     private $creditOrder;
+
+    public function __toString()
+    {
+        return $this->role;
+    }
 
     public function getRole(): ?string
     {

@@ -1,18 +1,17 @@
 {% extends "admin/base.html.twig" %}
 
 {% block body %}
-	<div class="container">
-		<div class="row">
-			<h1>Modifier le job</h1>
-		</div>
-		<div class="row">
-			{{ form_start(form) }}
-            {{ form_row(form.name) }}
-			{{ form_row(form.department) }}
-			<button>Modifier</button>
-			{{ form_end(form) }}
-		</div>
-	</div>
-
+<div class="container">
+    <div class="row">
+    <h1>Modifier le Job</h1>
+    </div>
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.department) }}
+        <button>Modifier</button>
+        {{ form_end(form) }}
+    </div>
+</div>
 
 {% endblock %}

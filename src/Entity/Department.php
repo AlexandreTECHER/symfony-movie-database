@@ -2,13 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\DepartmentRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DepartmentRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\DepartmentRepository")
  */
 class Department
 {
@@ -35,7 +34,7 @@ class Department
     private $updatedAt;
 
     /**
-     * @ORM\OneToMany(targetEntity=Job::class, mappedBy="department")
+     * @ORM\OneToMany(targetEntity="App\Entity\Job", mappedBy="department")
      */
     private $jobs;
 
@@ -49,6 +48,7 @@ class Department
     {
         return $this->name;
     }
+
     public function getId(): ?int
     {
         return $this->id;

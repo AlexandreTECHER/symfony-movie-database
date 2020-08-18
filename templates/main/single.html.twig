@@ -3,27 +3,36 @@
 {% block title %}{{ movie.title }}{% endblock %}
 
 {% block body %}
-
-    <div class="container">
-        <div class="row">
-            <h1>{{ movie.title }}</h1>
-        </div>
-        <div class="row">
-        
+<div class="container">
+    <div class="row">
+    <h1>{{ movie.title }}</h1>
+    </div>
+    <div class="row">
         <div class="col-6">
-        
-        {% for actor in movie.actors %}
-            <li>{{ actor.role }} <em>(joué par : {{ actor.person.name }})</em></li>
-        {% endfor %}
+            {# Liste des castings du film #}
+            {#
+            On pourrait afficher la lsite des castings en les triant dans le template
+            grâce au filtre sort()
+            {% for casting in movie.castings|sort((a, b) => a.creditOrder <=> b.creditOrder) %}
+            #}
+            <ul>
+            {# {% for casting in movie.castings %}
+                <li>{{ casting.role }} <em>(joué par {{ casting.person.name }})</em></li>    
+            {% endfor %} #}
+            {% for actor in movie.employees %}
+                <li>{{ actor.role|default('') }} <em>(joué par {{ actor.person.name }})</em></li>    
+            {% endfor %}
+            </ul>
         </div>
         <div class="col-6">
-        
+            {# Liste des genres du film #}
+            <ul>
             {% for genre in movie.genres %}
                 <li>{{ genre.name }}</li>
             {% endfor %}
-        
-        </div>
+            </ul>
         </div>
     </div>
+</div>
 
 {% endblock %}

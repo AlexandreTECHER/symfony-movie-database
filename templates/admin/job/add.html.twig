@@ -2,17 +2,17 @@
 
 {% block body %}
 
-	<div class="container">
-		<div class="row">
-			<h1>Ajouter le job</h1>
-		</div>
-		<div class="row">
-			{{ form_start(form) }}
-            {{ form_row(form.name) }}
-			{{ form_row(form.department) }}
-			<button>Ajouter</button>
-			{{ form_end(form) }}
-		</div>
-	</div>
+<div class="container">
+    <div class="row">
+    <h1>Ajouter un Job</h1>
+    </div>
+    <div class="row">
+        {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.department) }}
+        <button>Ajouter</button>
+        {{ form_end(form) }}
+    </div>
+</div>
 
 {% endblock %}

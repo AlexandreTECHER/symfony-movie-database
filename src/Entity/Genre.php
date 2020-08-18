@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\GenreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=GenreRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\GenreRepository")
  */
 class Genre
 {
@@ -16,11 +16,13 @@ class Genre
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("movie")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=40)
+     * @Groups("movie")
      */
     private $name;
 
@@ -35,7 +37,7 @@ class Genre
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Movie::class, mappedBy="genres")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Movie", mappedBy="genres")
      */
     private $movies;
 

@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\DirectorRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=DirectorRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\DirectorRepository")
  */
 class Director extends Employment
 {
-
+    public function __toString()
+    {
+        return $this->person->getName();
+    }
 }

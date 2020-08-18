@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\MovieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * @ORM\Entity(repositoryClass=MovieRepository::class)
+ * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
  */
 class Movie
 {
@@ -16,41 +16,57 @@ class Movie
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("movie")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("movie")
      */
     private $title;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups("movie")
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups("movie")
      */
     private $updatedAt;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="movies", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="App\Entity\Genre", inversedBy="movies", cascade={"persist"})
+     * @Groups("movie")
      */
     private $genres;
 
     /**
-     * @ORM\OneToMany(targetEntity=Employment::class, mappedBy="movie", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Employment", mappedBy="movie", orphanRemoval=true)
+     * @Groups("movie")
      */
     private $employees;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("movie")
+     */
+    private $slug;
+
     public function __construct()
     {
+        $this->castings = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->genres = new ArrayCollection();
-        $this->castings = new ArrayCollection();
         $this->employees = new ArrayCollection();
+    }
 
+    public function __toString()
+    {
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -104,10 +120,9 @@ class Movie
 
     public function addGenre(Genre $genre): self
     {
-        if($this->genres === null){
+        if ($this->genres === null) {
             $this->genres = new ArrayCollection();
         }
-
         if (!$this->genres->contains($genre)) {
             $this->genres[] = $genre;
         }
@@ -127,31 +142,54 @@ class Movie
     /**
      * @return Collection|Employment[]
      */
-    public function getEmployments(): Collection
+    public function getEmployees(): Collection
     {
-        return $this->employments;
+        return $this->employees;
     }
 
-    public function addEmployment(Employment $employment): self
+    public function addEmployee(Employment $employee): self
     {
-        if (!$this->employments->contains($employment)) {
-            $this->employments[] = $employment;
-            $employment->setMovie($this);
+        if (!$this->employees->contains($employee)) {
+            $this->employees[] = $employee;
+            $employee->setMovie($this);
         }
 
         return $this;
     }
 
-    public function removeEmployment(Employment $employment): self
+    public function removeEmployee(Employment $employee): self
     {
-        if ($this->employments->contains($employment)) {
-            $this->employments->removeElement($employment);
+        if ($this->employees->contains($employee)) {
+            $this->employees->removeElement($employee);
             // set the owning side to null (unless already changed)
-            if ($employment->getMovie() === $this) {
-                $employment->setMovie(null);
+            if ($employee->getMovie() === $this) {
+                $employee->setMovie(null);
             }
         }
 
         return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): self
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * On peut créer les méthodes qu'on veut pour afficher des données en JSON
+     * On crée ici un getter qui retourne une donnée qui nous arrange
+     * 
+     * @Groups("movie")
+     */
+    public function getNumberEmployees()
+    {
+        return count($this->employees);
     }
 }

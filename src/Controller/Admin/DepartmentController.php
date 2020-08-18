@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
-* @Route("/admin/department", name="admin_department_")
+ * @Route("/admin/department", name="admin_department_")
  */
 class DepartmentController extends AbstractController
 {
@@ -25,7 +25,7 @@ class DepartmentController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="read", requirements={"id" : "\d+"})
+     * @Route("/{id}", name="read", requirements={"id": "\d+"})
      */
     public function read(Department $department)
     {
@@ -35,22 +35,23 @@ class DepartmentController extends AbstractController
     }
 
     /**
-     * @Route("/edit/{id}", name="edit", requirements={"id" : "\d+"})
+     * @Route("/{id}/edit", name="edit", requirements={"id": "\d+"})
      */
     public function edit(Department $department, Request $request)
     {
-
+        // Pour éditer l'entité, il nous un formulaire
         $form = $this->createForm(DepartmentType::class, $department);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
+        if($form->isSubmitted() && $form->isValid()) {
+            // On peut maintenant modifier la propriété updatedAt de $department
             $department->setUpdatedAt(new \DateTime());
 
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            // Notre entité est modifié, on peut flush
+            $this->getDoctrine()->getManager()->flush();
 
+            // On redirige vers la liste des Departments
             return $this->redirectToRoute('admin_department_browse');
         }
 
@@ -65,17 +66,18 @@ class DepartmentController extends AbstractController
     public function add(Request $request)
     {
         $department = new Department();
-
         $form = $this->createForm(DepartmentType::class, $department);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-
+        if($form->isSubmitted() && $form->isValid()) {
+            // On récupère l'entity manager
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($department);
             $em->flush();
 
+            // On redirige vers la liste des Departments
             return $this->redirectToRoute('admin_department_browse');
         }
 
@@ -85,18 +87,15 @@ class DepartmentController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="delete", requirements={"id" : "\d+"}, methods={"DELETE"})
+     * @Route("/{id}/delete", name="delete", requirements={"id": "\d+"}, methods={"DELETE"})
      */
     public function delete(Department $department)
     {
-
         $em = $this->getDoctrine()->getManager();
 
         $em->remove($department);
         $em->flush();
 
         return $this->redirectToRoute('admin_department_browse');
-
     }
-
 }
